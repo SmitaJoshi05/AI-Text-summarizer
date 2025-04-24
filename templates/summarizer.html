@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summarize Text</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .summarizer-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            resize: vertical;
+            padding: 10px;
+        }
+        .box {
+            flex: 1;
+        }
+        .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Summarize Your Text</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="summarizer-container">
+            <div class="box">
+                <h3>Enter Text or Upload File</h3>
+                <textarea name="text" placeholder="Paste your text here">{{ original if original else "" }}</textarea>
+                <input type="file" name="file" accept=".txt,.pdf">
+                <button class="btn" type="submit">Summarize</button>
+            </div>
+            <div class="box">
+                <h3>Summary</h3>
+                <textarea readonly>{{ summary if summary else "" }}</textarea>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

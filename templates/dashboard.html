@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Your Summarization History</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Original Text</th>
+                <th>Summary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for summary in summaries %}
+            <tr>
+                <td>{{ summary.id }}</td>
+                <td>{{ summary.text[:100] }}...</td>
+                <td>{{ summary.summary[:100] }}...</td>
+                <td>
+                    <a href="/delete_summary/{{ summary.id }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
