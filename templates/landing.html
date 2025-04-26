@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,12 +17,12 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
+    
     <div id="loginModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span onclick="hideLogin()" class="close">&times;</span>
             <h2>Login</h2>
-            <!-- login form will go here -->
+
             <form action="/login" method="POST">
               <input type="email" name="email" placeholder="Email" required><br>
               <input type="password" name="password" placeholder="Password" required><br>
@@ -32,12 +32,12 @@
         </div>
     </div>
 
-    <!-- Signup Modal -->
+
     <div id="signupModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span onclick="hideSignup()" class="close">&times;</span>
             <h2>Sign Up</h2>
-            <!-- signup form will go here -->
+
             <form action="/signup" method="POST">
               <input type="email" name="email" placeholder="Email" required><br>
               <input type="password" name="password" placeholder="Password" required><br>
@@ -48,5 +48,171 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortex-Text summarizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="fixed top-4 right-4 z-50">
+            {% for category, message in messages %}
+            <div class="bg-red-500 text-white px-4 py-2 rounded mb-2 shadow-lg">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+  
+    <header>
+        <div ><img src="{{ url_for('static', filename='images/logo.png') }}" alt="company logo" class="logo"></div>
+        <nav>
+            <ul>
+                <li class="opt">Home</li>
+                <li class="opt">How it works</li>
+                <li class="opt">About Us</li>
+                
+            </ul>
+            <div class="button-container">
+                <button class="signup" onclick="OpenPopup()">Sign Up</button>
+                <button class="login" onclick="openPopup()">Log In</button> 
+            </div>
+        </nav>
+        
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Shorten your texts with just a click using the power of AI</h1>
+                <p class="text">We offer effective text summarization without missing important information.</p>
+                <a href="/summarize"><button class="cta">Try <span style='font-size:20px;'>&#8599;</span></button></a>
+            </div>
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='images/sum.png') }}" alt="Folder illustration">
+            </div>
+        </section>
+    </main>
+<br>
+<br>
+<br>
+<br>
+    <footer id="copyright">© Copyright 2025  Shortex </footer>
+
+
+
+    <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center opacity-0 invisible transition-opacity duration-300">
+        <!-- Login Box -->
+        <div class="bg-gradient-to-b from-zinc-500 to-zinc-900 to-75% p-8 rounded-lg shadow-lg w-96 transform scale-95 transition-transform duration-300">
+            <h2 class="text-2xl font-bold text-center mb-4">Welcome Back!</h2>
+            <p class="text-gray-200 text-center mb-6">Log in to explore all features.</p>
+            <form action="/login" method="POST">
+            <input type="email" name="email" placeholder="Enter your email" class="w-full p-3 border rounded mb-3 focus:ring-2 focus:ring-black-400 focus:outline-none" required>
+            <input type="password" name="password" placeholder="Enter your password" class="w-full p-3 border rounded mb-3 focus:ring-2 focus:ring-black-400 focus:outline-none" required>
+            
+
+            <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" class="mr-2"> Remember me
+                </label>
+                <a href="#" class="text-blue-700 hover:underline" >Forgot Password?</a>
+            </div>
+
+            <button class="w-full bg-blue-500 text-white p-3 rounded font-bold hover:bg-blue-600 transition" type="submit">
+                Login
+            </button></form>
+
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Don't have an account? 
+                    <a href="#" class="text-blue-500 hover:underline dark:text-blue-400" onclick="OpenPopup() ,closePopup()">Register Now</a>
+                </p>
+            </div>
+
+            <!-- Close Button -->
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-gray-400 hover:text-black text-xl">&times;</button>
+        </div>
+    </div>
+
+
+
+
+    <div id="PopupOverlay" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center opacity-0 invisible transition-opacity duration-300 ease-in-out">
+        <!-- Login Popup -->
+        <div class="bg-gradient-to-b from-zinc-500 to-zinc-900 to-75% p-8 rounded-lg shadow-lg w-[500px] md:w-[600px] transform scale-95 transition-transform duration-300">
+            <div class="relative flex">
+                <!-- Image Section -->
+                <div class="w-1/2 flex items-center justify-center">
+                    <img src="logo.png" alt="logo" class="object-cover w-full">
+                </div>
+                <!-- Form Section -->
+                <div class="w-1/2 p-6">
+                    <h2 class="text-xl font-bold mb-4">Let's create your profile!</h2>
+                    <p class="text-gray-200 text-sm mb-4">Enter your details..</p>
+                    <form action="/signup" method="POST">
+                    <input type="email" name="email" placeholder="Enter your email" class="w-full p-2 border rounded mb-3" required>
+                    <input type="password" name="password" 
+                     placeholder="Enter your password" class="w-full p-2 border rounded mb-3" required>
+                    
+    
+                    <button class="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600" type="submit">
+                        Sign Up
+                    </button></form>
+    
+    
+                    <button onclick="ClosePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-black text-xl">&times;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<!-- <script>
+    function OpenPopup() {
+    let popup = document.getElementById("PopupOverlay");
+    popup.classList.remove("opacity-0", "invisible");
+    popup.classList.add("opacity-100", "visible");
+
+    let popupBox = popup.querySelector("div");
+    popupBox.classList.replace("scale-95", "scale-100");}
+
+
+    function ClosePopup() {
+    let popup = document.getElementById("PopupOverlay");
+    popup.classList.replace("opacity-100", "opacity-0");
+
+    let popupBox = popup.querySelector("div");
+    popupBox.classList.replace("scale-100", "scale-95");
+
+    setTimeout(() => {
+        popup.classList.replace("visible", "invisible");
+    }, 300);}
+
+
+    function openPopup() {
+        document.getElementById("popupOverlay").classList.remove("opacity-0", "invisible");
+        document.querySelector(".scale-95").classList.replace("scale-95", "scale-100");
+    }
+
+    function closePopup() {
+        document.getElementById("popupOverlay").classList.add("opacity-0", "invisible");
+        document.querySelector(".scale-100").classList.replace("scale-100", "scale-95");
+    }
+</script> -->
+
+
+
 </body>
 </html>

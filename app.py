@@ -10,7 +10,7 @@
 #     app.run(debug=True)
 import os
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, flash
 from db import db, init_db
 from auth import auth_bp
 from model import summarize_text
@@ -24,11 +24,47 @@ app.register_blueprint(auth_bp)
 def landing():
     return render_template('landing.html')
 
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('home'))
+
 # @app.route('/dashboard')
 # def dashboard():
 #     if 'user_id' in session:
 #         return render_template('dashboard.html')
 #     return redirect(url_for('landing'))
+from db import db, User 
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+    user = User.query.filter_by(email=email, password=password).first()
+    
+    if user:
+        session['user_id'] = user.id
+        return redirect(url_for('dashboard'))  # success
+    else:
+        flash('Invalid email or password.', 'error')
+        return redirect(url_for('home'))  # or render_template('index.html') if needed
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    email = request.form['email']
+    password = request.form['password']
+    existing_user = User.query.filter_by(email=email).first()
+
+    if existing_user:
+        flash('Email already registered.', 'error')
+        return redirect(url_for('home'))
+    
+    new_user = User(email=email, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    session['user_id'] = new_user.id
+    return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')
 def dashboard():
